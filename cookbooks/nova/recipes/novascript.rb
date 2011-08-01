@@ -17,19 +17,40 @@
 # limitations under the License.
 #
 
-package "git-core"
+package "git"
 
 execute "git clone https://github.com/vishvananda/novascript" do
+  cwd "/tmp"
   not_if { File.exists?("novascript") }
+  user node[:nova][:creds][:user]
+  group node[:nova][:creds][:group]
 end
 
-execute "./novascript/nova.sh branch #{node[:nova][:source_branch]}"
-
-execute "./novascript/nova.sh install" do
-  user "root"
+execute "mkdir -p /tmp/bzr" do
+  not_if { File.exists?("/tmp/bzr") }
+  user node[:nova][:creds][:user]
+  group node[:nova][:creds][:group]
 end
 
-execute "./novascript/nova.sh run_detached" do
+execute "../novascript/nova.sh install" do
+  cwd "/tmp/bzr"
+  user node[:nova][:creds][:user]
+  group node[:nova][:creds][:group]
+end
+
+execute "rm -rf /tmp/bzr/nova" do
+  user node[:nova][:creds][:user]
+  group node[:nova][:creds][:group]
+end
+
+execute "../novascript/nova.sh branch #{node[:nova][:source_branch]}" do
+  cwd "/tmp/bzr"
+  user node[:nova][:creds][:user]
+  group node[:nova][:creds][:group]
+end
+
+execute "../novascript/nova.sh run_detached" do
+  cwd "/tmp/bzr"
   user "root"
   environment ({'INTERFACE' => node[:nova][:vlan_interface],
                 'FLOATING_RANGE' => node[:nova][:floating_range],
@@ -38,6 +59,7 @@ execute "./novascript/nova.sh run_detached" do
 end
 
 execute "unzip -o ./nova/nova.zip -d #{node[:nova][:creds][:dir]}/" do
+  cwd "/tmp/bzr"
   user node[:nova][:creds][:user]
   group node[:nova][:creds][:group]
 end
