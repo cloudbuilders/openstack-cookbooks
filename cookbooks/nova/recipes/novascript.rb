@@ -49,7 +49,12 @@ execute "../novascript/nova.sh branch #{node[:nova][:source_branch]}" do
   group node[:nova][:creds][:group]
 end
 
-execute "../novascript/nova.sh run_detached" do
+execute "mkdir -p /tmp/instances" do
+  not_if { File.exists?("/tmp/instances") }
+  user "root"
+end
+
+execute "INSTANCES_PATH=/tmp/instances ../novascript/nova.sh run_detached" do
   cwd "/tmp/bzr"
   user "root"
   environment ({'INTERFACE' => node[:nova][:vlan_interface],
