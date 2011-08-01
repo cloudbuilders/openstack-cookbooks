@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+package "bzr"
 package "git"
 package "vim-gtk"
 package "screen"
@@ -24,9 +25,10 @@ package "tmux"
 package "exuberant-ctags"
 
 u = node['settings']['user']
-execute "git clone http://github.com/vishvananda/settings.git -b linux /home/#{u}/settings/" do
+g = node['settings']['group']
+execute "git clone #{node['settings']['repository']} /home/#{u}/settings/" do
   user u
-  group u
+  group g
   not_if { File.exists?("/home/#{u}/settings/") }
 end
 
@@ -37,6 +39,12 @@ execute "cd /home/#{u} && settings/link.sh" do
 end
 
 execute "ln -s /home/#{u}/.host-ssh/id_rsa /home/#{u}/.ssh/id_rsa" do
+  user u
+  group u
+  not_if { File.exists?("/home/#{u}/.ssh/id_rsa") }
+end
+
+execute "bzr whoami #{node['settings']['whoami']}" do
   user u
   group u
   not_if { File.exists?("/home/#{u}/.ssh/id_rsa") }
