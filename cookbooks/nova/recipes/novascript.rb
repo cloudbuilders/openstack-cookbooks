@@ -55,8 +55,9 @@ execute "rm -rf /tmp/deploy/nova" do
   group node[:nova][:creds][:group]
 end
 
-execute "../deploy.sh/nova.sh branch #{node[:nova][:source_branch]}" do
+execute "../deploy.sh/nova.sh branch #{node[:nova][:bzr_branch]}" do
   cwd "/tmp/deploy"
+  environment ({'USE_GIT' => '0'})
   user node[:nova][:creds][:user]
   group node[:nova][:creds][:group]
 end
