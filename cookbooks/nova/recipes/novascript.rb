@@ -38,8 +38,8 @@ execute "mkdir -p /tmp/deploy" do
   group node[:nova][:creds][:group]
 end
 
-execute "cp -r /tmp/bzr tmp/deploy" do
-  not_if { File.exists?("/tmp/deploy") }
+execute "cp -r /tmp/bzr /tmp/deploy/nova" do
+  only_if { File.exists?("/tmp/bzr/.bzr") }
   user node[:nova][:creds][:user]
   group node[:nova][:creds][:group]
 end
@@ -51,13 +51,14 @@ execute "../deploy.sh/nova.sh install" do
 end
 
 execute "rm -rf /tmp/deploy/nova" do
+  not_if { File.exists?("/tmp/bzr/.bzr") }
   user node[:nova][:creds][:user]
   group node[:nova][:creds][:group]
 end
 
-execute "../deploy.sh/nova.sh branch #{node[:nova][:bzr_branch]}" do
+execute "../deploy.sh/nova.sh branch #{node[:nova][:source_branch]}" do
+  not_if { File.exists?("/tmp/bzr/.bzr") }
   cwd "/tmp/deploy"
-  environment ({'USE_GIT' => '0'})
   user node[:nova][:creds][:user]
   group node[:nova][:creds][:group]
 end
