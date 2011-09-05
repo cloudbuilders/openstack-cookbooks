@@ -17,6 +17,8 @@
 # limitations under the License.
 #
 
+include_recipe "apt"
+
 package "bzr"
 package "git"
 package "vim-gtk"
