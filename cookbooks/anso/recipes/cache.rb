@@ -18,6 +18,7 @@
 #
 
 d = node['cache']['dir']
+u = node['cache']['user']
 
 execute "rm -rf /var/cache/apt; mkdir -p #{d}/aptcache; ln -s #{d}/aptcache /var/cache/apt"
 
@@ -25,7 +26,7 @@ execute "mkdir -p #{d}/pipcache; ln -s #{d}/pipcache /var/cache/pip" do
   not_if { File.directory?("/var/cache/pip") }
 end
 
-execute "cp -r #{d}/stack /opt/stack" do
+execute "cp -r #{d}/stack /opt/stack; chown -R #{u} /opt/stack" do
   only_if { File.directory?("#{d}/stack") }
   not_if { File.directory?("/opt/stack") }
 end

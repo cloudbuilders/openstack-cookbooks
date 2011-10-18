@@ -25,8 +25,8 @@ execute "git clone git://github.com/cloudbuilders/devstack.git" do
   not_if { File.directory?("#{node[:nova][:source][:dir]}/devstack") }
 end
 
-execute "./stack.sh" do
-  cwd "#{node[:nova][:source][:dir]}/devstack"
+
+execute "exec su -c 'set -e; cd #{node[:nova][:source][:dir]}/devstack; bash stack.sh' #{node[:nova][:source][:user]}" do
   environment ({"FORCE" => "yes",
                 "MYSQL_PASSWORD" => node[:nova][:source][:mysql_password],
                 "RABBIT_PASSWORD" => node[:nova][:source][:rabbit_password],
@@ -34,4 +34,3 @@ execute "./stack.sh" do
                 "ADMIN_PASSWORD" => node[:nova][:source][:admin_password],
                 "SHELL_AFTER_RUN" => "no"})
 end
-
