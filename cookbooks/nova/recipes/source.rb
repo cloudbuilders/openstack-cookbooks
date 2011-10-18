@@ -31,6 +31,7 @@ execute "./stack.sh" do
                 "MYSQL_PASSWORD" => node[:nova][:source][:mysql_password],
                 "RABBIT_PASSWORD" => node[:nova][:source][:rabbit_password],
                 "SERVICE_TOKEN" => node[:nova][:source][:service_token],
-                "ADMIN_PASSWORD" => node[:nova][:source][:admin_password]})
+                "ADMIN_PASSWORD" => node[:nova][:source][:admin_password],
+                "SHELL_AFTER_RUN" => "no"})
 end
 
