@@ -26,7 +26,7 @@ execute "git clone git://github.com/cloudbuilders/devstack.git" do
 end
 
 
-execute "exec su -c 'set -e; cd #{node[:nova][:source][:dir]}/devstack; bash stack.sh' #{node[:nova][:source][:user]}" do
+execute "su -c 'set -e; cd #{node[:nova][:source][:dir]}/devstack; bash stack.sh' #{node[:nova][:source][:user]}" do
   environment ({"FORCE" => "yes",
                 "MYSQL_PASSWORD" => node[:nova][:source][:mysql_password],
                 "RABBIT_PASSWORD" => node[:nova][:source][:rabbit_password],
