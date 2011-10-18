@@ -19,15 +19,14 @@
 
 d = node['cache']['dir']
 
-execute "mkdir -p #{d}/aptcache; ln -s /var/cache/apt/archive #{d}/aptcache" do
-  not_if { File.exists?("/var/cache/apt/archive") }
+execute "rm -rf /var/cache/apt; mkdir -p #{d}/aptcache; ln -s #{d}/aptcache /var/cache/apt"
+
+execute "mkdir -p #{d}/pipcache; ln -s #{d}/pipcache /var/cache/pip" do
+  not_if { File.directory?("/var/cache/pip") }
 end
 
-execute "mkdir -p #{d}/pipcache; ln -s /var/cache/pip #{d}/pipcache" do
-  not_if { File.exists?("/var/cache/pip") }
-end
-
-execute "mkdir -p #{d}/stack; ln -s /opt/stack #{d}/stack" do
-  not_if { File.exists?("/opt/stack") }
+execute "cp -r #{d}/stack /opt/stack" do
+  only_if { File.directory?("#{d}/stack") }
+  not_if { File.directory?("/opt/stack") }
 end
 

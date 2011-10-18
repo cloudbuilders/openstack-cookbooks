@@ -27,8 +27,6 @@ end
 
 execute "./stack.sh" do
   cwd "#{node[:nova][:source][:dir]}/devstack"
-  user node[:nova][:source][:user]
-  group node[:nova][:source][:group]
   environment ({"FORCE" => "yes",
                 "MYSQL_PASSWORD" => node[:nova][:source][:mysql_password],
                 "RABBIT_PASSWORD" => node[:nova][:source][:rabbit_password],
