@@ -30,9 +30,9 @@ execute "./stack.sh" do
   user node[:nova][:source][:user]
   group node[:nova][:source][:group]
   environment ({"FORCE" => "yes",
-                "MYSQL_PASSWORD" => node[:nova][:db][:password],
-                "RABBIT_PASSWORD" => node[:nova][:rabbit][:password],
-                "SERVICE_TOKEN" => node[:nova][:keystone][:token],
-                "ADMIN_PASSWORD" => node[:nova][:admin_password]})
+                "MYSQL_PASSWORD" => node[:nova][:source][:mysql_password],
+                "RABBIT_PASSWORD" => node[:nova][:source][:rabbit_password],
+                "SERVICE_TOKEN" => node[:nova][:source][:service_token],
+                "ADMIN_PASSWORD" => node[:nova][:source][:admin_password]})
 end
 
