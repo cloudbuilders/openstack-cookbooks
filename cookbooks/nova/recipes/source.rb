@@ -17,65 +17,22 @@
 # limitations under the License.
 #
 
-include_recipe "runit"
 
-package "bzr"
-package "python-pip"
-package "python-setuptools"
-package "gcc"
-package "python-dev"
-
-execute "easy_install virtualenv"
-
-execute "bzr init-repo nova" do
-  cwd node[:nova][:services_base_dir]
-  not_if { File.directory?(node[:nova][:nova_base_dir]) }
+execute "git clone git://github.com/cloudbuilders/devstack.git" do
+  cwd node[:nova][:source][:dir]
+  user node[:nova][:source][:user]
+  group node[:nova][:source][:group]
+  not_if { File.directory?("#{node[:nova][:source][:dir]}/devstack") }
 end
 
-execute "bzr branch #{node[:nova][:bzr_branch]} #{node[:nova][:local_branch_name]}" do
-  cwd node[:nova][:nova_base_dir]
-  not_if { File.directory?(node[:nova][:local_branch_dir]) }
+execute "./stack.sh" do
+  cwd "#{node[:nova][:source][:dir]}/devstack"
+  user node[:nova][:source][:user]
+  group node[:nova][:source][:group]
+  environment ({"FORCE" => "yes",
+                "MYSQL_PASSWORD" => node[:nova][:db][:password],
+                "RABBIT_PASSWORD" => node[:nova][:rabbit][:password],
+                "SERVICE_TOKEN" => node[:nova][:keystone][:token],
+                "ADMIN_PASSWORD" => node[:nova][:admin_password]})
 end
 
-execute "python tools/install_venv.py" do
-  cwd node[:nova][:local_branch_dir]
-  not_if { File.exists?(File.join(node[:nova][:local_branch_dir], ".nova-venv/bin/activate")) }
-end
-
-file File.join(node[:nova][:local_branch_dir], "/.nova-venv/lib/python2.6/site-packages/nova.pth") do
-  content node[:nova][:local_branch_dir]
-end
-
-bash "install nova user" do
-  code "./tools/with_venv.sh ./bin/nova-manage user admin admin"
-  cwd node[:nova][:local_branch_dir]
-  not_if "#{node[:nova][:local_branch_dir]}/tools/with_venv.sh #{node[:nova][:local_branch_dir]}/bin/nova-manage user list | grep admin"
-end
-
-
-bash "create project" do
-  code "./tools/with_venv.sh ./bin/nova-manage project create admin admin"
-  cwd node[:nova][:local_branch_dir]
-  not_if "#{node[:nova][:local_branch_dir]}/tools/with_venv.sh #{node[:nova][:local_branch_dir]}/bin/nova-manage project list | grep admin"
-end
-
-bash "create project zipfile" do
-  code "./tools/with_venv.sh ./bin/nova-manage project zip admin admin"
-  cwd node[:nova][:local_branch_dir]
-  not_if { File.exists?(File.join(node[:nova][:local_branch_dir], "nova.zip")) }
-end
-
-execute "unzip nova.zip" do
-  cwd node[:nova][:local_branch_dir]
-  not_if { File.exists?(File.join(node[:nova][:local_branch_dir], "novarc")) }
-end
-
-execute "wget https://gist.github.com/gists/818882/download -o nova-screen" do
-  cwd node[:nova][:local_branch_dir]
-  not_if { File.exists?(File.join(node[:nova][:local_branch_dir],
-                                  'nova-screen'))}
-end
-
-execute "chmod +x nova-screen" do
-  cwd node[:nova][:local_branch_dir]
-end
