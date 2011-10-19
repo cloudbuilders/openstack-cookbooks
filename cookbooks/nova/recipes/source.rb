@@ -17,6 +17,7 @@
 # limitations under the License.
 #
 
+package "git"
 
 execute "git clone git://github.com/cloudbuilders/devstack.git" do
   cwd node[:nova][:source][:dir]
