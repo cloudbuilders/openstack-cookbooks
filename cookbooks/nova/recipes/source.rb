@@ -19,13 +19,12 @@
 
 package "git"
 
-execute "git clone git://github.com/cloudbuilders/devstack.git" do
+execute "git clone #{node[:nova][:source][:repository]}" do
   cwd node[:nova][:source][:dir]
   user node[:nova][:source][:user]
   group node[:nova][:source][:group]
   not_if { File.directory?("#{node[:nova][:source][:dir]}/devstack") }
 end
-
 
 execute "su -c 'set -e; cd #{node[:nova][:source][:dir]}/devstack; bash stack.sh' #{node[:nova][:source][:user]}" do
   environment ({"FORCE" => "yes",
