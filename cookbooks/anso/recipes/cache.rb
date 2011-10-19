@@ -26,7 +26,7 @@ execute "mkdir -p #{d}/pipcache; ln -s #{d}/pipcache /var/cache/pip" do
   not_if { File.directory?("/var/cache/pip") }
 end
 
-execute "cp -r #{d}/stack /opt/stack; chown -R #{u} /opt/stack" do
+execute "mkdir -p #{d}/stack; ln -s #{d}/stack /opt/stack" do
   only_if { File.directory?("#{d}/stack") }
   not_if { File.directory?("/opt/stack") }
 end
