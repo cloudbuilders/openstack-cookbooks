@@ -32,5 +32,6 @@ execute "su -c 'set -e; cd #{node[:nova][:source][:dir]}/devstack; bash stack.sh
                 "RABBIT_PASSWORD" => node[:nova][:source][:rabbit_password],
                 "SERVICE_TOKEN" => node[:nova][:source][:service_token],
                 "ADMIN_PASSWORD" => node[:nova][:source][:admin_password],
+                "HOST_IP" => node[:nova][:source][:host_ip],
                 "SHELL_AFTER_RUN" => "no"})
 end
