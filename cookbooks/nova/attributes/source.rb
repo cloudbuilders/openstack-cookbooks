@@ -6,5 +6,6 @@ default[:nova][:source][:service_token] = "secrete"
 default[:nova][:source][:user] = "vagrant"
 default[:nova][:source][:group] = "vagrant"
 default[:nova][:source][:dir] = "/home/vagrant"
+default[:nova][:source][:instances_path] = "/home/vagrant"
 default[:nova][:host_ip] = ipaddress
 
