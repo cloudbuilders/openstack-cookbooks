@@ -34,5 +34,9 @@ execute "su -c 'set -e; cd #{node[:nova][:source][:dir]}/devstack; bash stack.sh
                 "ADMIN_PASSWORD" => node[:nova][:source][:admin_password],
                 "HOST_IP" => node[:nova][:source][:host_ip],
                 "INSTANCES_PATH" => node[:nova][:source][:instances_path],
+                "FLAT_INTERFACE" => node[:nova][:source][:flat_interface],
+                "PUBLIC_INTERFACE" => node[:nova][:source][:public_interface],
+                "FIXED_RANGE" => node[:nova][:source][:fixed_range],
+                "FLOATING_RANGE" => node[:nova][:source][:floating_range],
                 "SHELL_AFTER_RUN" => "no"})
 end

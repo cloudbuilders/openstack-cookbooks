@@ -7,5 +7,9 @@ default[:nova][:source][:user] = "vagrant"
 default[:nova][:source][:group] = "vagrant"
 default[:nova][:source][:dir] = "/home/vagrant"
 default[:nova][:source][:instances_path] = "/home/vagrant"
+default[:nova][:source][:flat_interface] = "eth0"
+default[:nova][:source][:public_interface] = "eth0"
+default[:nova][:source][:fixed_range] = "10.0.0.0/24"
+default[:nova][:source][:floating_range] = "172.24.4.224/28"
 default[:nova][:host_ip] = ipaddress
 
