@@ -28,6 +28,7 @@ end
 
 execute "su -c 'set -e; cd #{node[:nova][:source][:dir]}/devstack; bash stack.sh' #{node[:nova][:source][:user]}" do
   environment ({"FORCE" => "yes",
+                "RECLONE" => node[:nova][:source][:reclone],
                 "MYSQL_PASSWORD" => node[:nova][:source][:mysql_password],
                 "RABBIT_PASSWORD" => node[:nova][:source][:rabbit_password],
                 "SERVICE_TOKEN" => node[:nova][:source][:service_token],

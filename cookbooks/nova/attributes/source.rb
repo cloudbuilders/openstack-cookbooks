@@ -1,3 +1,4 @@
+default[:nova][:source][:reclone] = "yes"
 default[:nova][:source][:repository] = "git://github.com/cloudbuilders/devstack.git"
 default[:nova][:source][:admin_password] = "secrete"
 default[:nova][:source][:mysql_password] = "secrete"
