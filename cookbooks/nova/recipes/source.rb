@@ -26,18 +26,11 @@ execute "git clone #{node[:nova][:source][:repository]}" do
   not_if { File.directory?("#{node[:nova][:source][:dir]}/devstack") }
 end
 
-execute "su -c 'set -e; cd #{node[:nova][:source][:dir]}/devstack; bash stack.sh' #{node[:nova][:source][:user]}" do
-  environment ({"FORCE" => "yes",
-                "RECLONE" => node[:nova][:source][:reclone],
-                "MYSQL_PASSWORD" => node[:nova][:source][:mysql_password],
-                "RABBIT_PASSWORD" => node[:nova][:source][:rabbit_password],
-                "SERVICE_TOKEN" => node[:nova][:source][:service_token],
-                "ADMIN_PASSWORD" => node[:nova][:source][:admin_password],
-                "HOST_IP" => node[:nova][:source][:host_ip],
-                "INSTANCES_PATH" => node[:nova][:source][:instances_path],
-                "FLAT_INTERFACE" => node[:nova][:source][:flat_interface],
-                "PUBLIC_INTERFACE" => node[:nova][:source][:public_interface],
-                "FIXED_RANGE" => node[:nova][:source][:fixed_range],
-                "FLOATING_RANGE" => node[:nova][:source][:floating_range],
-                "SHELL_AFTER_RUN" => "no"})
+template "#{node[:nova][:source][:dir]}/devstack/localrc" do
+  source "localrc.erb"
+  owner node[:nova][:source][:user]
+  group node[:nova][:source][:group]
+  mode 0644
 end
+
+execute "su -c 'set -e; cd #{node[:nova][:source][:dir]}/devstack; bash stack.sh' #{node[:nova][:source][:user]}"
