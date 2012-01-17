@@ -11,5 +11,4 @@ FLAT_INTERFACE=<%= node[:nova][:source][:flat_interface] %>
 PUBLIC_INTERFACE=<%= node[:nova][:source][:public_interface] %>
 FIXED_RANGE=<%= node[:nova][:source][:fixed_range] %>
 FLOATING_RANGE=<%= node[:nova][:source][:floating_range] %>
-NOVA_REPO=<%= node[:nova][:source][:nova_repo] %>
-NOVA_BRANCH=<%= node[:nova][:source][:nova_branch] %>
+<%= node[:nova][:source][:localrc] %>
