@@ -1,4 +1,4 @@
-default[:nova][:source][:reclone] = "yes"
+default[:nova][:source][:reclone] = "no"
 default[:nova][:source][:repository] = "git://github.com/openstack-dev/devstack.git"
 default[:nova][:source][:admin_password] = "secrete"
 default[:nova][:source][:mysql_password] = "secrete"
@@ -15,3 +15,12 @@ default[:nova][:source][:floating_range] = "172.24.4.224/28"
 default[:nova][:host_ip] = ipaddress
 default[:nova][:source][:nova_repo] = "git://github.com/openstack/nova.git"
 default[:nova][:source][:nova_branch] = "master"
+default[:nova][:source][:glance_branch] = "master"
+default[:nova][:source][:horizon_branch] = "master"
+default[:nova][:source][:keystone_branch] = "master"
+default[:nova][:source][:keystoneclient_branch] = "master"
+default[:nova][:source][:novaclient_branch] = "master"
+default[:nova][:source][:quantum_branch] = "master"
+default[:nova][:source][:quantum_client_branch] = "master"
+default[:nova][:source][:swift_branch] = "master"
+
